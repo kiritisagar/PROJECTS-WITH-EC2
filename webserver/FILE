@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Update the package list
+sudo apt update
+
+# Install Nginx
+sudo apt install nginx -y
+
+# Start Nginx
+sudo systemctl start nginx
+
+# Enable Nginx to start on boot
+sudo systemctl enable nginx
+
+# Download the mediplus-lite template (if wget is not installed, install it first)
+sudo apt install wget unzip -y
+wget -O mediplus-lite.zip https://www.free-css.com/assets/files/free-css-templates/download/page296/mediplus-lite.zip
+
+# Unzip the template
+unzip mediplus-lite.zip -d mediplus-lite
+
+# Move the template files to the Nginx web root directory
+sudo mv mediplus-lite/* /var/www/html/
+
+
