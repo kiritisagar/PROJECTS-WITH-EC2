@@ -1,0 +1,83 @@
+# Architecture Overview
+VPC (Virtual Private Cloud): To host your infrastructure.
+Public Subnet: For the web servers (EC2 instances) and Load Balancer.
+Private Subnet: For the application servers (EC2 instances) and database (RDS instance).
+Load Balancer: To distribute traffic across web servers.
+Auto Scaling: To automatically adjust the number of EC2 instances based on demand.
+Security Groups and Network ACLs: To control traffic between tiers.
+
+
+# Step-by-Step Guide
+1. Set Up VPC and Subnets
+Create a VPC:
+
+Open the VPC Dashboard in the AWS Management Console.
+Create a new VPC with a suitable CIDR block (e.g., 10.0.0.0/16).
+Create Subnets:
+
+Create two public subnets in different Availability Zones (AZs).
+Create two private subnets in different AZs.
+Create an Internet Gateway:
+
+Attach the Internet Gateway to your VPC.
+Update the route table for the public subnets to route traffic to the Internet Gateway.
+Create NAT Gateway:
+
+Create a NAT Gateway in one of the public subnets.
+Update the route table for the private subnets to route traffic to the NAT Gateway.
+2. Set Up Security Groups
+Web Server Security Group:
+
+Allow inbound traffic on port 80 (HTTP) and 443 (HTTPS) from anywhere.
+Allow outbound traffic to the application server and the Internet.
+Application Server Security Group:
+
+Allow inbound traffic on the required application port (e.g., 8080) from the web server security group.
+Allow outbound traffic to the database server.
+Database Security Group:
+
+Allow inbound traffic on the database port (e.g., 3306 for MySQL) from the application server security group.
+Restrict outbound traffic as needed.
+3. Launch EC2 Instances
+Web Servers:
+
+Launch EC2 instances in the public subnets using the web server security group.
+Install and configure the web server software (e.g., Nginx, Apache).
+Application Servers:
+
+Launch EC2 instances in the private subnets using the application server security group.
+Install and configure the application server software.
+Database Server:
+
+Launch an RDS instance in the private subnets using the database security group.
+Configure the database with the necessary schemas and data.
+4. Configure Load Balancer
+Create an Application Load Balancer (ALB):
+
+Place it in the public subnets.
+Configure the ALB to route traffic to the web server instances.
+Set Up Target Groups:
+
+Create a target group for the web servers.
+Register the web server instances with the target group.
+Create Listeners:
+
+Create listeners for HTTP and/or HTTPS.
+Configure rules to forward traffic to the web server target group.
+5. Set Up Auto Scaling
+Create Launch Configuration/Template:
+
+Define the AMI, instance type, and security group for the web and application servers.
+Specify the startup script to install and configure necessary software.
+Create Auto Scaling Groups:
+
+Set up an auto-scaling group for the web servers using the public subnets.
+Set up an auto-scaling group for the application servers using the private subnets.
+Define the scaling policies based on CPU utilization or other metrics.
+6. Configure Route 53 (Optional)
+Register a Domain:
+
+Register a domain in Route 53 or use an existing one.
+Create DNS Records:
+
+Create A/AAAA or CNAME records pointing to the ALB.
