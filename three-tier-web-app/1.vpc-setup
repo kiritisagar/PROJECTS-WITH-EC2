@@ -1,0 +1,40 @@
+#Create a VPC
+Open the VPC Dashboard in the AWS Management Console.
+Click on "Create VPC."
+Enter a name for your VPC and a CIDR block (e.g., 10.0.0.0/16).
+Click "Create."
+
+# Create Subnets
+Public Subnet:
+Go to "Subnets" and click "Create subnet."
+Select your VPC, choose an availability zone, and specify the CIDR block (e.g., 10.0.1.0/24).
+Name it "Public Subnet."
+
+Private Subnets:
+Create two private subnets in different availability zones.
+Use CIDR blocks like 10.0.2.0/24 and 10.0.3.0/24.
+Name them "Private Subnet 1" and "Private Subnet 2."
+
+#Create an Internet Gateway
+Go to "Internet Gateways" and click "Create internet gateway."
+Attach the Internet gateway to your VPC.
+
+# Create a NAT Gateway
+Go to "NAT Gateways" and click "Create NAT gateway."
+Select the public subnet and an Elastic IP.
+Click "Create NAT gateway."
+
+# Create Route Tables
+1.Public Route Table:
+Go to "Route Tables" and click "Create route table."
+Associate it with your VPC and name it "Public Route Table."
+Edit the route table to add a route to the Internet (0.0.0.0/0) pointing to the Internet gateway.
+
+2.Private Route Table:
+Create a route table and name it "Private Route Table."
+Associate it with your VPC.
+Edit the route table to add a route to the Internet (0.0.0.0/0) pointing to the NAT gateway.
+
+# Associate Route Tables with Subnets
+Associate the public route table with the public subnet.
+Associate the private route table with both private subnets.
